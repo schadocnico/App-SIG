@@ -20,6 +20,24 @@ const Bdd = () => {
         };
         getAPI();
     }, []);
+
+    const patchSalle = (id) => {
+        // Change this endpoint to whatever local or online address you have
+        // Local PostgreSQL Database
+        const API = 'http://176.169.46.223:5000/:' + id;
+
+        fetch(API)
+            .then((response) => {
+                console.log(response);
+                return response.json();
+            })
+            .then((data) => {
+                console.log(data);
+                setLoading(false);
+                setApiData(data);
+            });
+    };
+
     const [apiData, setApiData] = useState([]);
     const [loading, setLoading] = useState(true);
     return (
@@ -37,7 +55,7 @@ const Bdd = () => {
                         {apiData.map((salle) => {
 
                             return (
-                                <div className="salle-container" key={String(salle.salle)}>
+                                <div className="salle-container" key={String(salle.id)}>
                                     <p>{salle.fonction}</p>
                                 </div>
                             );
