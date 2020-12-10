@@ -5,7 +5,8 @@ const Bdd = () => {
         const getAPI = () => {
             // Change this endpoint to whatever local or online address you have
             // Local PostgreSQL Database
-            const API = 'http://176.169.46.223:5000/';
+            //const API = 'http://176.169.46.223:5000/';
+            const API='http://localhost:5000';
 
             fetch(API)
                 .then((response) => {
@@ -38,7 +39,7 @@ const Bdd = () => {
 
                             return (
                                 <div className="salle-container" key={String(salle.salle)}>
-                                    <p>{salle.fonction}</p>
+                                    <p>{salle.fonction} {salle.salle}</p>
                                 </div>
                             );
                         })}
