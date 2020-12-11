@@ -52,7 +52,7 @@ app.get('/spec/:id', (req, res)=>{
 });
 
 //put: patch a salle by it's ID
-app.get('/change/:id', (req, res)=>{
+app.put('/change/:id', (req, res)=>{
     console.log("test2");
     var salleid = req.query.id;
     var updatedSalle = req.query.fonction;
