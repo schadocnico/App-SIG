@@ -77,7 +77,7 @@ const Bdd = () => {
                         </form>
                     </section>
                 )}
-            </main>
+            </main> 
         </Fragment>
     );
 };
