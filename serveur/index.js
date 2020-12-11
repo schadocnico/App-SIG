@@ -52,15 +52,15 @@ app.get('/spec/:id', (req, res)=>{
 });
 
 //put: patch a salle by it's ID
-app.get('/change/:id/:fonction', (req, res)=>{
+app.get('/change/:id', (req, res)=>{
     console.log("test2");
     var salleid = req.query.id;
     var updatedSalle = req.query.fonction;
     db('rdc').where('id', '=', req.params.id)
-    .update({fonction : req.params.fonction})
+    .update({fonction : req.body.fonction})
     .then(() => {
         console.log("salle updated");
-        res.json({msg:"salle updated"});
+        res.json(req.body.fonction);
     })
     .catch((err) => {
         console.log(err);
