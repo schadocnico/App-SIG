@@ -45,7 +45,7 @@ const Bdd = () => {
                         })}
                     </section>
                 )}
-            </main>
+            </main> 
         </Fragment>
     );
 };
