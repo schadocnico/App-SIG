@@ -55,9 +55,12 @@ const Bdd = () => {
                         {apiData.map((salle) => {
 
                             return (
-                                <div className="salle-container" key={String(salle.id)}>
-                                    <p>{salle.fonction}</p>
-                                </div>
+                              <select name="salle" key={String(salle.id)}>
+                                <option key={salle.name}>
+                                  {salle.name}
+                                </option>
+                              </select>
+                              <input type="text" id="fonction" name="fonction" required minlength="2" maxlength="128">
                             );
                         })}
                     </section>
