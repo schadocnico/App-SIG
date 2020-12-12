@@ -120,7 +120,6 @@ class OLMapFragment extends React.Component {
         const style = {
             width: '100%',
             height:this.state.height,
-            backgroundImage: "url(" + "https://media-exp1.licdn.com/dms/image/C4D35AQGqAKlWsqp3Zg/profile-framedphoto-shrink_400_400/0/1597224495749?e=1607875200&v=beta&t=1Dc_dTpqY0knwxxWejl9q7NSd2Ac8FF08mXjFHoYkFU" + ")",
         }
         return (
             <div id='map' style={style} >
