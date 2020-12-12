@@ -52,7 +52,7 @@ class OLMapFragment extends React.Component {
         this.updateDimensions = this.updateDimensions.bind(this)
     }
     updateDimensions(){
-        const h = window.innerWidth >= 992 ? window.innerHeight : 400
+        const h = window.innerHeight*0.45
         this.setState({height: h})
     }
     componentWillMount(){
