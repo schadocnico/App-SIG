@@ -67,6 +67,20 @@ app.put('/change/:id', (req, res)=>{
     });
 });
 
+
+app.get('/qr/:id', (req, res)=>{
+    db.select('*')
+    .from('qrc_rdc')
+    .where('id', '=', req.params.id)
+    .then((data) => {
+        console.log(data);
+        res.json(data);
+    })
+    .catch((err) => {
+        console.log(err);
+    });
+});
+
 //post: post a new salle
 /*app.post('/newsalle/:id', (req, res)=>{
     db('rdc').post(req.body)
