@@ -81,6 +81,7 @@ app.get('/qr/:id', (req, res)=>{
     });
 });
 
+
 //post: post a new salle
 /*app.post('/newsalle/:id', (req, res)=>{
     db('rdc').post(req.body)
