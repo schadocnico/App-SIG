@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment, useState, useEffect } from 'react';
 import ReactDOM from "react-dom";
 import Bdd from "./bdd.js";
 // Start Openlayers imports
@@ -40,16 +40,41 @@ import {
     RegularShape as RegularShapeStyle,
     Stroke as StrokeStyle
 } from 'ol/style'
-
 import { 
     Projection,
     get as getProjection
- } from 'ol/proj'
+} from 'ol/proj'
+import Point from 'ol/geom/Point';
+
+
 class OLMapFragment extends React.Component {
  
     constructor(props) {
         super(props)
+        this.localisation();
         this.updateDimensions = this.updateDimensions.bind(this)
+    }
+    localisation(){
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        let numSalle = 1;
+        if(urlParams.has('salle')){
+            numSalle = urlParams.get('salle')
+        }
+        //Demande a l'api la localisation
+        const API = 'http://176.169.46.223:5000/qr/' + numSalle;
+
+        fetch(API)
+            .then((response) => {
+                console.log(response);
+                return response.json();
+            })
+            .then((data) => {
+                console.log(data);
+                this.setState({center_x: data.st_x, center_y: data.st_y}, () => this.test());
+                //map.getView().setCenter(ol.proj.fromLonLat([lon, lat]))
+            });
+        
     }
     updateDimensions(){
         const h = window.innerHeight*0.45
@@ -59,12 +84,10 @@ class OLMapFragment extends React.Component {
         window.addEventListener('resize', this.updateDimensions)
         this.updateDimensions()
     }
-    componentDidMount(){
+    test(){
         let format = 'image/png';
-        let bounds = [1.93954952537819, 47.8448985682432,
-            1.94007434047805, 47.8455632040748];
         // Create an Openlayer Map instance with two tile layers
-        const map = new Map({
+        let map = new Map({
             //  Display the map in the div with the id of map
             target: 'map',
             layers: [
@@ -73,10 +96,12 @@ class OLMapFragment extends React.Component {
                       ratio: 1,
                       url: 'http://176.169.46.223:8080/geoserver/espace/wms',
                       params: {'FORMAT': format,
-                               'VERSION': '1.1.1',  
+                               'VERSION': '1.1.1',
+                               tiled: true,
                             "STYLES": '',
                             "LAYERS": 'espace:rdc',
                             "exceptions": 'application/vnd.ogc.se_inimage',
+                            tilesOrigin: 1.93954952537819 + "," + 47.8448985682432
                       }
                     })
                 }),
@@ -88,7 +113,7 @@ class OLMapFragment extends React.Component {
                                'VERSION': '1.1.1',
                                tiled: true,
                             "STYLES": '',
-                            "LAYERS": 'espace:rdc',
+                            "LAYERS": 'espace:qrc_rdc',
                             "exceptions": 'application/vnd.ogc.se_inimage',
                             tilesOrigin: 1.93954952537819 + "," + 47.8448985682432
                       }
@@ -105,11 +130,13 @@ class OLMapFragment extends React.Component {
             // Render the tile layers in a map view with a Mercator projection
             view: new View({
                 projection: 'EPSG:4326',
-                center: [0, 0],
-                zoom: 2
+                center: [this.state.center_x, this.state.center_y],
+                zoom: 21
             })
         })
-        map.getView().fit(bounds, map.getSize());
+        console.log(this.state.center_x);
+        map.getView().setCenter([this.state.center_x, this.state.center_y]);
+        
     }
     componentWillUnmount(){
         window.removeEventListener('resize', this.updateDimensions)
@@ -121,9 +148,11 @@ class OLMapFragment extends React.Component {
             width: '100%',
             height:this.state.height,
         }
-        return (
+        return ( 
+
             <div id='map' style={style} >
             </div>
+
         )
     }
 }
@@ -134,6 +163,7 @@ function App(props){
             <div>
                <OLMapFragment />
                <Bdd />
+               
             </div>
         );
 }

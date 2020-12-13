@@ -49,6 +49,7 @@ const Bdd = () => {
     const [loading, setLoading] = useState(true);
     const [valueInput, setValueInput] = useState("");
     const [idSelect, setIdSelect] = useState(1);
+
     return (
         <Fragment>
             <header>
@@ -67,7 +68,7 @@ const Bdd = () => {
 
                                     return (
                                     
-                                        <option value={salle.id}>{salle.fonction}</option>
+                                        <option value={salle.id_salle}>{salle.fonction}</option>
                                     
                                     );
                                 })}

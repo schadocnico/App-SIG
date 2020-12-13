@@ -41,7 +41,7 @@ app.get('/spec/:id', (req, res)=>{
     console.log("test1");
     db.select('*')
     .from('rdc')
-    .where('id', '=', req.params.id)
+    .where('id_salle', '=', req.params.id)
     .then((data) => {
         console.log(data);
         res.json(data);
@@ -56,7 +56,7 @@ app.put('/change/:id', (req, res)=>{
     console.log("test2");
     var salleid = req.query.id;
     var updatedSalle = req.query.fonction;
-    db('rdc').where('id', '=', req.params.id)
+    db('rdc').where('id_salle', '=', req.params.id)
     .update({fonction : req.body.fonction})
     .then(() => {
         console.log("salle updated");
@@ -69,18 +69,16 @@ app.put('/change/:id', (req, res)=>{
 
 
 app.get('/qr/:id', (req, res)=>{
-    db.select('*')
-    .from('qrc_rdc')
-    .where('id', '=', req.params.id)
+    db.raw('SELECT ST_X(ST_AsText(geom)),ST_Y(ST_AsText(geom)) FROM qrc_rdc WHERE id_salle = ' + req.params.id)
     .then((data) => {
-        console.log(data);
-        res.json(data);
+        console.log(data.rows[0]);
+        res.json(data.rows[0]);
+
     })
     .catch((err) => {
         console.log(err);
     });
 });
-
 
 //post: post a new salle
 /*app.post('/newsalle/:id', (req, res)=>{
