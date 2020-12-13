@@ -67,11 +67,13 @@ app.put('/change/:id', (req, res)=>{
     });
 });
 
+
 app.get('/qr/:id', (req, res)=>{
     db.raw('SELECT ST_X(ST_AsText(geom)),ST_Y(ST_AsText(geom)) FROM qrc_rdc WHERE id_salle = ' + req.params.id)
     .then((data) => {
         console.log(data.rows[0]);
         res.json(data.rows[0]);
+
     })
     .catch((err) => {
         console.log(err);
