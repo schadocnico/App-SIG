@@ -120,7 +120,6 @@ class OLMapFragment extends React.Component {
         const style = {
             width: '100%',
             height:this.state.height,
-            backgroundColor: '#cccccc',
         }
         return (
             <div id='map' style={style} >
