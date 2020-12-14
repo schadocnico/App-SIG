@@ -74,7 +74,7 @@ const Bdd = () => {
                                 })}
                             </select>
                             <input type="text" value={valueInput} onChange={(event) => setValueInput(event.target.value)} />
-                            <input type="button" value="Submit "onClick={() => patchSalle()}/>
+                            <input type="button" value="Submit" onClick={() => patchSalle()}/>
                         </form>
                     </section>
                 )}

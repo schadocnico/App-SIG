@@ -25,11 +25,10 @@ app.use(cors());
 // GET: Fetch all pieces
 app.get('/', (req, res) => {
     console.log("dans le /"); 
-    db.select('*')
-        .from('rdc')
+    db.raw('SELECT * FROM rdc UNION ALL SELECT * from premier ORDER BY id_salle')
         .then((data) => {
-            console.log(data);
-            res.json(data);
+            console.log(data.rows);
+            res.json(data.rows);
         })
         .catch((err) => {
             console.log(err);
@@ -38,9 +37,13 @@ app.get('/', (req, res) => {
 
 //GetSalle: fetch a salle by it's ID
 app.get('/spec/:id', (req, res)=>{
+    let based = 'rdc'
+    if(req.params.id > 13 ){
+        based = 'premier'
+    }
     console.log("test1");
     db.select('*')
-    .from('rdc')
+    .from(based)
     .where('id_salle', '=', req.params.id)
     .then((data) => {
         console.log(data);
@@ -56,7 +59,11 @@ app.put('/change/:id', (req, res)=>{
     console.log("test2");
     var salleid = req.query.id;
     var updatedSalle = req.query.fonction;
-    db('rdc').where('id_salle', '=', req.params.id)
+    let based = 'rdc'
+    if(req.params.id > 13 ){
+        based = 'premier'
+    }
+    db(based).where('id_salle', '=', req.params.id)
     .update({fonction : req.body.fonction})
     .then(() => {
         console.log("salle updated");
@@ -69,7 +76,11 @@ app.put('/change/:id', (req, res)=>{
 
 
 app.get('/qr/:id', (req, res)=>{
-    db.raw('SELECT ST_X(ST_AsText(geom)),ST_Y(ST_AsText(geom)) FROM qrc_rdc WHERE id_salle = ' + req.params.id)
+    let based = 'qrc_rdc'
+    if(req.params.id > 13 ){
+        based = 'qrc_premier'
+    }
+    db.raw('SELECT ST_X(ST_AsText(geom)),ST_Y(ST_AsText(geom)) FROM ' + based + ' WHERE id_salle = ' + req.params.id)
     .then((data) => {
         console.log(data.rows[0]);
         res.json(data.rows[0]);
