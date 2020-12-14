@@ -53,7 +53,7 @@ class OLMapFragment extends React.Component {
  
     constructor(props) {
         super(props)
-        this.state = {visible: "RDC"}
+        this.state = {visible: "RDC", rdccode : true}
         this.localisation();
         this.updateDimensions = this.updateDimensions.bind(this)
     }
@@ -63,6 +63,9 @@ class OLMapFragment extends React.Component {
         let numSalle = 1;
         if(urlParams.has('salle')){
             numSalle = urlParams.get('salle')
+        }
+        if(numSalle > 13){
+            this.state = {visible: "premier", rdccode : false}
         }
         //Demande a l'api la localisation
         const API = 'http://176.169.46.223:5000/qr/' + numSalle;
@@ -103,6 +106,7 @@ class OLMapFragment extends React.Component {
                     tilesOrigin: 1.93954952537819 + "," + 47.8448985682432
               }
             }),
+            visible: this.state.rdccode
         }),
         layer_rdc_qrc: new TileLayer({
             source: new TileWMSSource({
@@ -116,7 +120,8 @@ class OLMapFragment extends React.Component {
                     "exceptions": 'application/vnd.ogc.se_inimage',
                     tilesOrigin: 1.93954952537819 + "," + 47.8448985682432
               }
-            })
+            }),
+            visible: this.state.rdccode
         }),
         layer_premier: new TileLayer({
             source: new TileWMSSource({
@@ -131,7 +136,7 @@ class OLMapFragment extends React.Component {
                     tilesOrigin: 1.93954952537819 + "," + 47.8448985682432
               }
             }),
-            visible: false
+            visible: !this.state.rdccode
         }),
         layer_premier_qrc: new TileLayer({
             source: new TileWMSSource({
@@ -146,7 +151,7 @@ class OLMapFragment extends React.Component {
                     tilesOrigin: 1.93954952537819 + "," + 47.8448985682432
               }
             }),
-            visible: false
+            visible: !this.state.rdccode
         })
     }, () => {this.setState({
         map : new Map({
