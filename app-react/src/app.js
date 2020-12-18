@@ -158,10 +158,14 @@ class OLMapFragment extends React.Component {
             //  Display the map in the div with the id of map
             target: 'map',
             layers: [
+                new TileLayer({
+                    source: new OSMSource()
+                  }),
                 this.state.layer_rdc,
                 this.state.layer_rdc_qrc,
                 this.state.layer_premier,
-                this.state.layer_premier_qrc
+                this.state.layer_premier_qrc,
+                
             ],
             // Add in the following map controls
             controls: DefaultControls().extend([
